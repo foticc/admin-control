@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <div class="modal-title">查看 {{ record.username }} 信息</div>
+</div>
+@if (i) {
+  <div sv-container>
+    <sv label="用户名">{{ record.username }}</sv>
+    <sv label="昵称">{{ record.nickName }}</sv>
+    <sv label="邮箱">{{ record.email }}</sv>
+    <sv label="手机号码">{{ record.phone }}</sv>
+    <sv label="是否过期">{{ record.accountExpired }}</sv>
+    <sv label="是否锁定">{{ record.accountLocked }}</sv>
+    <sv label="是否启用">{{ record.enable }}</sv>
+    <sv label="角色">{{ record.roles }}</sv>
+  </div>
+} @else {
+  <nz-spin class="modal-spin" />
+}
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>
