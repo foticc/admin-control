@@ -1,12 +1,14 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { NonNullableFormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { SFSchema, SFUISchema } from '@delon/form';
-import { _HttpClient } from '@delon/theme';
+import { _HttpClient, ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalRef } from 'ng-zorro-antd/modal';
 
 import { UserDetail } from '../../model';
+import { UserBindRoleComponent } from '../bindrole/user-bind-role.component';
 
 @Component({
   selector: 'app-user-userlist-edit',
@@ -17,13 +19,14 @@ import { UserDetail } from '../../model';
 export class UserlistEditComponent implements OnInit {
   record: UserDetail = {};
   i = {};
+  allRoles: Array<{ id: number; name: string }> = [];
   form = this.fb.group({
     id: null,
     username: '',
     nickName: '',
     email: '',
     phone: '',
-    roles: '',
+    roles: [],
     accountExpired: '',
     accountLocked: '',
     enable: ''
@@ -40,7 +43,7 @@ export class UserlistEditComponent implements OnInit {
       accountLocked: { type: 'boolean', title: 'Locked', maxLength: 140 },
       enable: { type: 'boolean', title: 'enable', maxLength: 140 }
     },
-    required: ['owner', 'callNo', 'href', 'description']
+    required: ['username']
   };
   ui: SFUISchema = {
     '*': {
@@ -60,30 +63,50 @@ export class UserlistEditComponent implements OnInit {
   };
 
   constructor(
-    private fb: NonNullableFormBuilder,
-    private modal: NzModalRef,
+    private fb: FormBuilder,
+    private modal: ModalHelper,
     private msgSrv: NzMessageService,
-    public http: _HttpClient
+    public http: _HttpClient,
+    private route: ActivatedRoute,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
-    if (this.record.id != null) {
-      this.http.get(`/user/list/${this.record.id}`).subscribe(res => this.form.patchValue(res));
+    let id = this.route.snapshot.paramMap.get('id');
+    if (id != null) {
+      this.http.get(`/user/list/${id}`).subscribe(res => this.form.patchValue(res));
     }
     // this.form.patchValue({ username: '123' });
+    this.http.get('/role/list').subscribe(res => {
+      this.allRoles = res;
+    });
   }
 
   save(): void {
-    // this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
+    // this.http.post(`/user/${this.record.id}`, this.form).subscribe(res => {
     //   this.msgSrv.success('保存成功');
-    //   this.modal.close(true);
+    //   this.back();
     // });
+    // console.log(this.form);
+    // this.msgSrv.success('保存成功');
+    // this.modal.close(true);
     console.log(this.form);
-    this.msgSrv.success('保存成功');
-    this.modal.close(true);
+  }
+
+  back(): void {
+    this.location.back();
   }
 
   close(): void {
-    this.modal.destroy();
+    // this.modal.destroy();
+    this.back();
+  }
+
+  compareFn(c1: { id: number; name: string }, c2: number): boolean {
+    return c1 && c2 ? c1.id === c2 : c1.id === c2;
+  }
+
+  bind(): void {
+    this.modal.createStatic(UserBindRoleComponent).subscribe(s => {});
   }
 }

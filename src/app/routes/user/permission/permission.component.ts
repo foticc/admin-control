@@ -1,20 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
-import { ModalHelper, _HttpClient } from '@delon/theme';
+import { _HttpClient, ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
+
+import { PermissionEditComponent } from './edit/edit.component';
+import { PermissionViewComponent } from './view/view.component';
 
 @Component({
   selector: 'app-user-permission',
   standalone: true,
   imports: [...SHARED_IMPORTS],
-  templateUrl: './permission.component.html',
+  templateUrl: './permission.component.html'
 })
 export class PermissionComponent implements OnInit {
-  url = `/user`;
+  url = `/perms/page`;
   searchSchema: SFSchema = {
     properties: {
-      no: {
+      id: {
         type: 'string',
         title: '编号'
       }
@@ -22,27 +25,40 @@ export class PermissionComponent implements OnInit {
   };
   @ViewChild('st') private readonly st!: STComponent;
   columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
+    { title: '编号', index: 'id' },
+    { title: '路径', type: 'link', index: 'path' },
     {
       title: '',
       buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: FormEditComponent, click: 'reload' },
+        {
+          text: '查看',
+          type: 'static',
+          modal: {
+            component: PermissionViewComponent
+          }
+        },
+        {
+          text: '编辑',
+          type: 'static',
+          modal: {
+            component: PermissionEditComponent
+          },
+          click: 'reload'
+        }
       ]
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) { }
+  constructor(
+    private http: _HttpClient,
+    private modal: ModalHelper
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   add(): void {
     // this.modal
     //   .createStatic(FormEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());
   }
-
 }

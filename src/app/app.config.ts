@@ -2,7 +2,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { default as ngLang } from '@angular/common/locales/zh';
 import { ApplicationConfig, EnvironmentProviders, Provider } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withHashLocation, RouterFeatures } from '@angular/router';
+import { provideRouter, RouterFeatures, withComponentInputBinding, withHashLocation, withInMemoryScrolling } from '@angular/router';
 import { defaultInterceptor, provideStartup } from '@core';
 import { provideCellWidgets } from '@delon/abc/cell';
 import { provideSTWidgets } from '@delon/abc/st';
@@ -11,7 +11,7 @@ import { provideSFConfig } from '@delon/form';
 import { AlainProvideLang, provideAlain, zh_CN as delonLang } from '@delon/theme';
 import { AlainConfig } from '@delon/util/config';
 import { environment } from '@env/environment';
-import { CELL_WIDGETS, ST_WIDGETS, SF_WIDGETS } from '@shared';
+import { CELL_WIDGETS, SF_WIDGETS, ST_WIDGETS } from '@shared';
 import { zhCN as dateLang } from 'date-fns/locale';
 import { NzConfig, provideNzConfig } from 'ng-zorro-antd/core/config';
 import { zh_CN as zorroLang } from 'ng-zorro-antd/i18n';
@@ -30,7 +30,15 @@ const defaultLang: AlainProvideLang = {
 };
 
 const alainConfig: AlainConfig = {
-  auth: { login_url: '/passport/login' }
+  auth: { login_url: '/passport/login' },
+  st: {
+    req: {
+      reName: {
+        pi: 'page',
+        ps: 'size'
+      }
+    }
+  }
 };
 
 const ngZorroConfig: NzConfig = {};

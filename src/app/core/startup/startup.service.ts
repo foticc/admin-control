@@ -98,15 +98,31 @@ export class StartupService {
       {
         text: 'Account',
         group: true,
-        children: [{ text: 'account', link: '/account', icon: { type: 'icon', value: 'appstore' } }]
+        children: [{ text: 'account', link: '/account', icon: { type: 'icon', value: 'setting' } }]
       },
       {
         text: 'User',
         group: true,
         children: [
-          { text: 'user', link: '/user/user', icon: { type: 'icon', value: 'appstore' } },
-          { text: 'role', link: '/user/role', icon: { type: 'icon', value: 'appstore' } },
-          { text: 'permission', link: '/user/permission', icon: { type: 'icon', value: 'appstore' } }
+          {
+            text: 'user',
+            link: '/user/user',
+            icon: { type: 'icon', value: 'user' }
+          },
+          { text: 'role', link: '/user/role', icon: { type: 'icon', value: 'team' } },
+          { text: 'permission', link: '/user/permission', icon: { type: 'icon', value: 'link' } }
+        ]
+      },
+      {
+        group: true,
+        text: 'Control',
+        children: [
+          {
+            text: 'Portainer',
+            externalLink: 'http://192.168.160.128:9000/',
+            target: '_blank',
+            icon: { type: 'icon', value: 'control' }
+          }
         ]
       }
     ]);

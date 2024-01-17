@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 
-import { UserlistEditComponent } from './edit/edit.component';
 import { UserApiService } from './user.api.service';
 import { UserlistViewComponent } from './view/view.component';
 
@@ -14,7 +14,7 @@ import { UserlistViewComponent } from './view/view.component';
   imports: [...SHARED_IMPORTS],
   templateUrl: './userlist.component.html'
 })
-export class UserlistComponent implements OnInit {
+export class UserlistComponent implements OnInit, OnDestroy {
   url = `/user/list`;
   searchSchema: SFSchema = {
     properties: {
@@ -45,17 +45,17 @@ export class UserlistComponent implements OnInit {
             params: item => {
               return { i: item.id };
             }
-          },
-          click: (item: any) => `/user/list/${item.id}`
+          }
         },
-        { text: '编辑', type: 'modal', modal: { component: UserlistEditComponent }, click: 'reload' }
+        { text: '编辑', type: 'link', click: (item: any) => `/user/user/${item.id}` }
       ]
     }
   ];
 
   constructor(
     private userService: UserApiService,
-    private modal: ModalHelper
+    private modal: ModalHelper,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -66,6 +66,9 @@ export class UserlistComponent implements OnInit {
   }
 
   add(): void {
-    this.modal.createStatic(UserlistEditComponent, { i: { id: 0 } }).subscribe(() => this.st.reload());
+    // this.modal.createStatic(UserlistEditComponent, { i: { id: 0 } }).subscribe(() => this.st.reload());
+    this.router.navigateByUrl('/user/user/');
   }
+
+  ngOnDestroy(): void {}
 }

@@ -4,6 +4,7 @@ import { SFSchema } from '@delon/form';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 
+import { RolelistEditComponent } from './edit/edit.component';
 import { RolelistViewComponent } from './view/view.component';
 
 @Component({
@@ -13,7 +14,7 @@ import { RolelistViewComponent } from './view/view.component';
   templateUrl: './rolelist.component.html'
 })
 export class RolelistComponent implements OnInit {
-  url = `/user`;
+  url = `/role/page`;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -24,10 +25,8 @@ export class RolelistComponent implements OnInit {
   };
   @ViewChild('st') private readonly st!: STComponent;
   columns: STColumn[] = [
-    { title: '编号', index: 'no' },
-    { title: '调用次数', type: 'number', index: 'callNo' },
-    { title: '头像', type: 'img', width: '50px', index: 'avatar' },
-    { title: '时间', type: 'date', index: 'updatedAt' },
+    { title: '编号', index: 'id' },
+    { title: '名称', type: 'tag', index: 'name' },
     {
       title: '',
       buttons: [
@@ -37,7 +36,7 @@ export class RolelistComponent implements OnInit {
           modal: { component: RolelistViewComponent },
           click: (item: any) => `/form/${item.id}`
         },
-        { text: '编辑', type: 'modal', modal: { component: RolelistViewComponent }, click: 'reload' }
+        { text: '编辑', type: 'modal', modal: { component: RolelistEditComponent }, click: 'reload' }
       ]
     }
   ];
