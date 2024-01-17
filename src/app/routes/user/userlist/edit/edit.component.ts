@@ -83,14 +83,14 @@ export class UserlistEditComponent implements OnInit {
   }
 
   save(): void {
-    // this.http.post(`/user/${this.record.id}`, this.form).subscribe(res => {
-    //   this.msgSrv.success('保存成功');
-    //   this.back();
-    // });
+    this.http.post(`/api/user/update`, this.form.value).subscribe(res => {
+      this.msgSrv.success('保存成功');
+      this.back();
+    });
     // console.log(this.form);
     // this.msgSrv.success('保存成功');
     // this.modal.close(true);
-    console.log(this.form);
+    // console.log(this.form);
   }
 
   back(): void {
