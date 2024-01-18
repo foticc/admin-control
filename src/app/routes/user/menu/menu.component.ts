@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
-import { timer } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface TreeNodeInterface {
   id: number;
@@ -31,7 +31,7 @@ export class UserMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this._http.get('/api/menu/load').subscribe(res => {
-      this.tableData = res;
+      this.tableData = res.data;
       this.tableData.forEach(fe => {
         this.mapOfExpandedData[fe.id] = this.convertTreeToList(fe);
       });
@@ -40,7 +40,8 @@ export class UserMenuComponent implements OnInit {
 
   collapse(array: TreeNodeInterface[], data: TreeNodeInterface, $event: boolean): void {
     console.log($event);
-    if (!$event) {
+    if ($event) {
+      console.log('data');
       if (data.children && data.children.length > 0) {
         data.children.forEach(d => {
           // tslint:disable-next-line:no-non-null-assertion
@@ -50,29 +51,16 @@ export class UserMenuComponent implements OnInit {
         });
       } else {
         this.loading = true;
-        timer(1000).subscribe(() => {
-          this.loading = false;
-          const childData: TreeNodeInterface[] = [
-            {
-              id: Math.random(),
-              text: `John Brown${Math.random()}`,
-              group: false,
-              link: 'string',
-              children: [],
-              level: 1
-            },
-            {
-              id: Math.random(),
-              text: `John Brown${Math.random()}`,
-              group: false,
-              link: 'string',
-              children: [],
-              level: 1
-            }
-          ];
+        this.getChildren(data.id).subscribe(res => {
+          let childData: TreeNodeInterface = res.data;
+          // @ts-ignore
           data.children = childData;
+          // @ts-ignore
           Array.from(childData).forEach(child => {
+            // @ts-ignore
+
             const childObj = {
+              // @ts-ignore
               ...child,
               level: data.level + 1,
               expand: false,
@@ -80,11 +68,13 @@ export class UserMenuComponent implements OnInit {
               children: []
             };
             // 插入到具体的节点中
+            // @ts-ignore
             if (!array.map(opt => opt.id).includes(child.id)) {
               const childParentIndex = array.map(opt => opt.id).indexOf(data.id);
               array.splice(childParentIndex + 1, 0, childObj);
             }
           });
+          this.loading = false;
         });
       }
     }
@@ -114,5 +104,9 @@ export class UserMenuComponent implements OnInit {
       hashMap[node.id] = true;
       array.push(node);
     }
+  }
+
+  getChildren(pid: number): Observable<any> {
+    return this._http.get(`/api/menu/load?pid=${pid}`);
   }
 }

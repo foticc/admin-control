@@ -5,7 +5,8 @@
       <th>id</th>
       <th>text</th>
       <th>link</th>
-      <th>link</th>
+      <th>group</th>
+      <th>-</th>
     </tr>
   </thead>
   <tbody>
@@ -14,15 +15,19 @@
         <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
           <td
             [nzIndentSize]="item.level * 20"
-            [nzShowExpand]="item.level === 0"
+            [nzShowExpand]="item.group"
             [(nzExpand)]="item.expand"
             (nzExpandChange)="collapse(mapOfExpandedData[data.id], item, $event)"
           >
             {{ item.id }}
           </td>
-          <td>{{ item.text }}</td>
+          <td><span nz-icon nzType="{{ item.icon }}" nzTheme="outline"></span>{{ item.text }}</td>
           <td>{{ item.link }}</td>
-          <td>{{ item.level }}</td>
+          <td>{{ item.group }}</td>
+          <td>
+            <button nz-button nzType="primary" nzShape="circle"><span nz-icon nzType="search"></span></button>
+            <button nz-button nzType="primary" nzShape="circle"><span nz-icon nzType="search"></span></button>
+          </td>
         </tr>
       </ng-container>
     </ng-container>
