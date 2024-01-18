@@ -9,7 +9,7 @@ import { provideSTWidgets } from '@delon/abc/st';
 import { authSimpleInterceptor, provideAuth } from '@delon/auth';
 import { provideSFConfig } from '@delon/form';
 import { AlainProvideLang, provideAlain, zh_CN as delonLang } from '@delon/theme';
-import { AlainConfig } from '@delon/util/config';
+import { AlainAuthConfig, AlainConfig } from '@delon/util/config';
 import { environment } from '@env/environment';
 import { CELL_WIDGETS, SF_WIDGETS, ST_WIDGETS } from '@shared';
 import { zhCN as dateLang } from 'date-fns/locale';
@@ -29,8 +29,14 @@ const defaultLang: AlainProvideLang = {
   delon: delonLang
 };
 
+const authConfig: AlainAuthConfig = {
+  login_url: '/passport/login',
+  token_send_template: 'Bearer ${token}',
+  token_send_key: 'Authorization'
+};
+
 const alainConfig: AlainConfig = {
-  auth: { login_url: '/passport/login' },
+  auth: authConfig,
   st: {
     req: {
       reName: {

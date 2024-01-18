@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { RouteTitle } from '@delon/theme';
 
+import { UserMenuComponent } from './menu/menu.component';
 import { PermissionComponent } from './permission/permission.component';
 import { RolelistComponent } from './rolelist/rolelist.component';
 import { UserlistEditComponent } from './userlist/edit/edit.component';
@@ -17,5 +18,6 @@ export const routes: Routes = [
     data: { title: '编辑', titleI18n: 'page-name' } as RouteTitle
   },
   { path: 'role', component: RolelistComponent },
-  { path: 'permission', component: PermissionComponent }
+  { path: 'permission', component: PermissionComponent },
+  { path: 'menu', component: UserMenuComponent }
 ];

@@ -1,0 +1,30 @@
+<page-header />
+<nz-table #expandTable [nzLoading]="loading" [nzData]="tableData">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>text</th>
+      <th>link</th>
+      <th>link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let data of expandTable.data">
+      <ng-container *ngFor="let item of mapOfExpandedData[data.id]">
+        <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
+          <td
+            [nzIndentSize]="item.level * 20"
+            [nzShowExpand]="item.level === 0"
+            [(nzExpand)]="item.expand"
+            (nzExpandChange)="collapse(mapOfExpandedData[data.id], item, $event)"
+          >
+            {{ item.id }}
+          </td>
+          <td>{{ item.text }}</td>
+          <td>{{ item.link }}</td>
+          <td>{{ item.level }}</td>
+        </tr>
+      </ng-container>
+    </ng-container>
+  </tbody>
+</nz-table>

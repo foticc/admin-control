@@ -36,7 +36,7 @@ function genData(params: any): { total: number; list: any[] } {
   return { total: ret.length, list: ret.slice(start, size * page) };
 }
 
-export const PERMISSION_Apage = {
+export const PERMISSION_API = {
   '/perms/page': (req: MockRequest) => genData(req.queryString),
   '/perms/:id': (req: MockRequest) => list.find(w => w.id === +req.params.id),
   'POST /perms': (req: MockRequest) => (req.queryString.status === 'success' ? OK : FAIL)

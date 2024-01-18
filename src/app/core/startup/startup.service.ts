@@ -122,6 +122,11 @@ export class StartupService {
             externalLink: 'http://192.168.160.128:9000/',
             target: '_blank',
             icon: { type: 'icon', value: 'control' }
+          },
+          {
+            text: 'Menu',
+            link: '/user/menu',
+            icon: { type: 'icon', value: 'menu' }
           }
         ]
       }
