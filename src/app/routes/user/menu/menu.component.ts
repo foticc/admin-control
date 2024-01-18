@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { _HttpClient } from '@delon/theme';
+import { _HttpClient, ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 import { Observable } from 'rxjs';
+
+import { MenueditComponent } from './menuedit/menuedit.component';
 
 export interface TreeNodeInterface {
   id: number;
@@ -27,7 +29,10 @@ export class UserMenuComponent implements OnInit {
   tableData: TreeNodeInterface[] = [];
   mapOfExpandedData: { [key: string]: TreeNodeInterface[] } = {};
 
-  constructor(private _http: _HttpClient) {}
+  constructor(
+    private _http: _HttpClient,
+    private modal: ModalHelper
+  ) {}
 
   ngOnInit(): void {
     this._http.get('/api/menu/load').subscribe(res => {
@@ -108,5 +113,29 @@ export class UserMenuComponent implements OnInit {
 
   getChildren(pid: number): Observable<any> {
     return this._http.get(`/api/menu/load?pid=${pid}`);
+  }
+
+  edit(item: TreeNodeInterface): void {
+    console.log(item);
+    this.modal.createStatic(MenueditComponent).subscribe(s => {
+      if (s.action != 'reload') {
+      }
+    });
+  }
+
+  delete(item: TreeNodeInterface): void {
+    console.log(`delete${item.id}`);
+  }
+
+  confirm() {}
+
+  cancel() {}
+
+  beforeConfirm(): Promise<boolean> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(true);
+      }, 3000);
+    });
   }
 }
