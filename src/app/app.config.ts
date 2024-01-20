@@ -43,6 +43,15 @@ const alainConfig: AlainConfig = {
         pi: 'page',
         ps: 'size'
       }
+    },
+    res: {
+      reName: {
+        list: ['data', 'content'],
+        total: ['data', 'totalElements']
+      }
+    },
+    page: {
+      zeroIndexed: true
     }
   }
 };
