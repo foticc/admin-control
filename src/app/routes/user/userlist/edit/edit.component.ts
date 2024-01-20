@@ -27,9 +27,9 @@ export class UserlistEditComponent implements OnInit {
     email: '',
     phone: '',
     roles: [],
-    accountExpired: '',
-    accountLocked: '',
-    enable: ''
+    accountExpired: false,
+    accountLocked: false,
+    enable: true
   });
   schema: SFSchema = {
     properties: {
@@ -83,7 +83,7 @@ export class UserlistEditComponent implements OnInit {
   }
 
   save(): void {
-    this.http.post(`/api/user/update`, this.form.value).subscribe(res => {
+    this.http.post(`/api/user/save`, this.form.value).subscribe(res => {
       this.msgSrv.success('保存成功');
       this.back();
     });

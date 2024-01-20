@@ -14,7 +14,7 @@ import { RolelistViewComponent } from './view/view.component';
   templateUrl: './rolelist.component.html'
 })
 export class RolelistComponent implements OnInit {
-  url = `/role/page`;
+  url = `/api/role/page`;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -46,7 +46,9 @@ export class RolelistComponent implements OnInit {
     private modal: ModalHelper
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log('ngOnInit');
+  }
 
   add(): void {
     // this.modal

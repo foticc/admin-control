@@ -1,35 +1,34 @@
 <div class="modal-header">
   <div class="modal-title">修改1信息</div>
 </div>
-<sv-container>
-  <sv-title>title</sv-title>
-  <sv label="Firefox">
-    A free, open source, cross-platform, graphical web browser developed by the Mozilla Corporation and hundreds of volunteers.
-  </sv>
-  <sv label="Firefox">
-    A free, open source, cross-platform, graphical web browser developed by the Mozilla Corporation and hundreds of volunteers.
-  </sv>
-  <sv label="Firefox">
-    A free, open source, cross-platform, graphical web browser developed by the Mozilla Corporation and hundreds of volunteers.
-  </sv>
-  <nz-divider />
-  <sv label="Default" />
-  <sv label="Unit" unit="个">10</sv>
-  <sv label="Unit" unit="个" />
-  <sv label="Col2" col="2">占两栏</sv>
-  <sv label="Value">
-    <sv-value prefix="约" unit="亿" tooltip="5,011,000,000">50.11</sv-value>
-  </sv>
-  <sv label="Mulit Value">
-    <sv-value>10</sv-value>
-    <sv-value>3</sv-value>
-  </sv>
-  <sv label="Value Size">
-    <sv-value>Default</sv-value>
-    <sv-value size="small">Samll</sv-value>
-    <sv-value size="large">Large</sv-value>
-  </sv>
-</sv-container>
+<form nz-form #f="ngForm" [formGroup]="form" se-container="2" (ngSubmit)="submitForm()">
+  <se label="Text">
+    <input type="text" nz-input formControlName="text" required />
+  </se>
+  <se label="Link">
+    <input type="text" nz-input formControlName="link" required />
+  </se>
+  <se label="Icon">
+    <input type="text" nz-input formControlName="icon" />
+  </se>
+  <se label="Enable">
+    <nz-switch formControlName="enable" nzCheckedChildren="启用" nzUnCheckedChildren="禁用" />
+  </se>
+  <se label="parent">
+    <nz-tree-select
+      formControlName="parentId"
+      nzShowIcon="true"
+      nzPlaceHolder="Please select"
+      [(ngModel)]="nodeSelectValue"
+      [nzDropdownMatchSelectWidth]="true"
+      [nzDropdownStyle]="{ 'max-height': '300px' }"
+      [nzNodes]="nodes"
+      [nzAsyncData]="true"
+      (nzExpandChange)="onExpandChange($event)"
+    />
+  </se>
+</form>
 <div class="modal-footer">
+  <button nz-button nzType="primary" type="submit" (click)="f.ngSubmit.emit()" [disabled]="!f.valid">保存</button>
   <button nz-button type="button" (click)="close()">关闭</button>
 </div>

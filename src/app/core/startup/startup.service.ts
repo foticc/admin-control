@@ -95,11 +95,7 @@ export class StartupService {
           }
         ]
       },
-      {
-        text: 'Account',
-        group: true,
-        children: [{ text: 'account', link: '/account', icon: { type: 'icon', value: 'setting' } }]
-      },
+
       {
         text: 'User',
         group: true,
@@ -129,6 +125,11 @@ export class StartupService {
             icon: { type: 'icon', value: 'menu' }
           }
         ]
+      },
+      {
+        text: 'Account',
+        group: true,
+        children: [{ text: 'account', link: '/account', icon: { type: 'icon', value: 'setting' } }]
       }
     ]);
     // Can be set page suffix title, https://ng-alain.com/theme/title

@@ -6,6 +6,12 @@ export interface Pageable {
   [key: string]: any;
 }
 
+export interface CommonResult<T> {
+  code: number;
+  message: string;
+  data: T;
+}
+
 export interface UserDetail {
   id?: number;
   username?: string;

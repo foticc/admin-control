@@ -30,12 +30,14 @@
             </button>
             <button
               nz-button
+              [disabled]="item.group"
               nzSize="small"
               nzType="primary"
               nzDanger
               nzShape="circle"
               nz-popconfirm
               nzOkDanger
+              [nzIcon]="iconTpl"
               nzPopconfirmTitle="Title"
               [nzBeforeConfirm]="beforeConfirm"
               (nzOnConfirm)="confirm()"
@@ -44,6 +46,9 @@
             >
               <span nz-icon nzType="delete"></span>
             </button>
+            <ng-template #iconTpl>
+              <span nz-icon nzType="question-circle-o" style="color: red"></span>
+            </ng-template>
           </td>
         </tr>
       </ng-container>

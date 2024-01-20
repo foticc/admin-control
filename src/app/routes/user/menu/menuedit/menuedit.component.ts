@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { _HttpClient } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-menuedit',
@@ -11,21 +14,26 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
   styles: ``
 })
 export class MenueditComponent implements OnInit, OnDestroy {
-  record = {
+  nodes: NzTreeNodeOptions[] = [];
+  nodeSelectValue?: string = '菜单1';
+  record: any;
+  form = this.fb.group({
     expand: false,
     group: true,
     hasChildren: null,
-    icon: 'user',
-    id: 1,
+    icon: '',
+    id: null,
     level: 0,
-    link: '/1',
+    link: null,
     parentId: null,
-    text: '菜单12'
-  };
+    text: null,
+    enable: true
+  });
 
   constructor(
     private modal: NzModalRef,
-    private _http: _HttpClient
+    private _http: _HttpClient,
+    private fb: FormBuilder
   ) {}
 
   close() {
@@ -36,10 +44,31 @@ export class MenueditComponent implements OnInit, OnDestroy {
     // this._http.get('/api/menu/1').subscribe(res => {
     //   this.record = res.data;
     // });
-    console.log(this.record);
+    this.form.patchValue(this.record);
+    this._http.get('/api/menu/tree').subscribe(res => {
+      console.log(res.data);
+      this.nodes = res.data;
+    });
   }
 
   ngOnDestroy(): void {
     this.modal.destroy();
+  }
+
+  submitForm() {
+    console.log(this.form.value);
+  }
+
+  onExpandChange(e: NzFormatEmitEvent): void {
+    const node = e.node;
+    if (node && node.getChildren().length === 0 && node.isExpanded) {
+      this.loadNode(node?.key).subscribe(data => {
+        node.addChildren(data);
+      });
+    }
+  }
+
+  loadNode(key?: string): Observable<NzTreeNodeOptions[]> {
+    return this._http.get(`/api/menu/tree?pid=${key}`).pipe(map(m => m.data));
   }
 }

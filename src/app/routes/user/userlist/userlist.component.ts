@@ -4,9 +4,10 @@ import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
-import { UserApiService } from './user.api.service';
 import { UserlistViewComponent } from './view/view.component';
+import { UserApiService } from '../apis/user.api.service';
 
 @Component({
   selector: 'app-user-userlist',
@@ -15,7 +16,7 @@ import { UserlistViewComponent } from './view/view.component';
   templateUrl: './userlist.component.html'
 })
 export class UserlistComponent implements OnInit, OnDestroy {
-  url = `/user/list`;
+  url = '/api/user/page';
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -26,7 +27,7 @@ export class UserlistComponent implements OnInit, OnDestroy {
   };
   @ViewChild('st') private readonly st!: STComponent;
   columns: STColumn[] = [
-    { title: '编号', index: 'id' },
+    { title: '编号', type: 'no' },
     { title: '用户名', index: 'username' },
     { title: '昵称', width: '50px', index: 'nickName' },
     { title: 'email', index: 'email' },
@@ -47,7 +48,12 @@ export class UserlistComponent implements OnInit, OnDestroy {
             }
           }
         },
-        { text: '编辑', type: 'link', click: (item: any) => `/user/user/${item.id}` }
+        { text: '编辑', type: 'link', click: (item: any) => `/user/user/${item.id}` },
+        {
+          text: '删除',
+          type: 'del',
+          click: (item: any) => this.deleteUser(item)
+        }
       ]
     }
   ];
@@ -55,14 +61,13 @@ export class UserlistComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserApiService,
     private modal: ModalHelper,
-    private router: Router
+    private router: Router,
+    private msgSrv: NzMessageService
   ) {}
 
   ngOnInit(): void {
-    this.userService.listPage({
-      size: 5,
-      page: 1
-    });
+    //nothing
+    console.log('ngOnInit');
   }
 
   add(): void {
@@ -70,5 +75,18 @@ export class UserlistComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/user/user/');
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy');
+  }
+
+  deleteUser(item: any) {
+    this.userService.deleteUser(item.id).subscribe(res => {
+      if (res.data > 0) {
+        this.msgSrv.success('删除成功');
+        this.st.reload();
+      } else {
+        this.msgSrv.success('删除失败');
+      }
+    });
+  }
 }

@@ -117,7 +117,7 @@ export class UserMenuComponent implements OnInit {
 
   edit(item: TreeNodeInterface): void {
     console.log(item);
-    this.modal.createStatic(MenueditComponent).subscribe(s => {
+    this.modal.createStatic(MenueditComponent, { record: item }).subscribe(s => {
       if (s.action != 'reload') {
       }
     });
