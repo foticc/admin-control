@@ -16,6 +16,10 @@ export class UserApiService {
     });
   }
 
+  getUser(id: number): Observable<CommonResult<UserDetail>> {
+    return this._http.get(`/api/user/${id}`);
+  }
+
   saveUser(req: UserDetail): Observable<CommonResult<UserDetail>> {
     return this._http.post('/api/user/save', req);
   }

@@ -2,9 +2,9 @@ import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest, HttpR
 import { inject, Injector } from '@angular/core';
 import { IGNORE_BASE_URL } from '@delon/theme';
 import { environment } from '@env/environment';
-import { mergeMap, Observable, of, throwError } from 'rxjs';
+import { catchError, mergeMap, Observable, of, throwError } from 'rxjs';
 
-import { checkStatus, getAdditionalHeaders, goTo, ReThrowHttpError, toLogin } from './helper';
+import { checkStatus, getAdditionalHeaders, ReThrowHttpError, toLogin } from './helper';
 import { tryRefreshToken } from './refresh-token';
 
 function handleData(injector: Injector, ev: HttpResponseBase, req: HttpRequest<any>, next: HttpHandlerFn): Observable<any> {
@@ -44,7 +44,13 @@ function handleData(injector: Injector, ev: HttpResponseBase, req: HttpRequest<a
     case 403:
     case 404:
     case 500:
-      goTo(injector, `/exception/${ev.status}?url=${req.urlWithParams}`);
+      // goTo(injector, `/exception/${ev.status}?url=${req.urlWithParams}`);
+      // injector.get(NzMessageService).error(ev);
+      // if (ev instanceof HttpErrorResponse) {
+      //   injector.get(NzMessageService).error(ev.error.message);
+      // } else {
+      //   injector.get(NzMessageService).error('未知错误');
+      // }
       break;
     default:
       if (ev instanceof HttpErrorResponse) {
@@ -79,7 +85,7 @@ export const defaultInterceptor: HttpInterceptorFn = (req, next) => {
       }
       // 若一切都正常，则后续操作
       return of(ev);
-    })
-    // catchError((err: HttpErrorResponse) => handleData(injector, err, newReq, next))
+    }),
+    catchError((err: HttpErrorResponse) => handleData(injector, err, newReq, next))
   );
 };

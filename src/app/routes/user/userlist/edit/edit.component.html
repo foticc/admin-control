@@ -13,8 +13,11 @@
   <form nz-form [nzLayout]="'horizontal'" nzNoColon [nzLabelAlign]="'right'" [formGroup]="form" (ngSubmit)="save()">
     <nz-form-item [nzJustify]="'space-between'">
       <nz-form-label nzLabelAlign="left" nzRequired="true" nzFor="username">用户名</nz-form-label>
-      <nz-form-control>
+      <nz-form-control nzHasFeedback [nzErrorTip]="usernameError">
         <input nz-input formControlName="username" name="username" type="text" id="username" />
+        <ng-template #usernameError let-control>
+          <ng-container>The input is not valid E-mail!,min5,max10</ng-container>
+        </ng-template>
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -25,7 +28,7 @@
     </nz-form-item>
     <nz-form-item>
       <nz-form-label nzFor="email">email</nz-form-label>
-      <nz-form-control>
+      <nz-form-control nzHasFeedback [nzErrorTip]="'格式不正确'">
         <input nz-input formControlName="email" name="email" type="email" id="email" />
       </nz-form-control>
     </nz-form-item>
@@ -62,7 +65,7 @@
       </nz-form-control>
     </nz-form-item>
     <div class="modal-footer">
-      <button nz-button type="submit" nzType="primary"> 保存</button>
+      <button nz-button type="submit" [disabled]="!form.valid" nzType="primary"> 保存</button>
       <button nz-button type="button" (click)="close()">关闭</button>
     </div>
   </form>

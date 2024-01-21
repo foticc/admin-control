@@ -13,13 +13,15 @@ export interface CommonResult<T> {
 }
 
 export interface UserDetail {
-  id?: number;
-  username?: string;
-  nickName?: string;
-  email?: string;
-  phone?: string;
-  accountExpired?: boolean;
-  accountLocked?: boolean;
-  enable?: boolean;
-  roles?: [];
+  id?: number | null | undefined;
+  username?: string | null;
+  nickName?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  accountExpired?: boolean | null;
+  accountLocked?: boolean | null;
+  enable?: boolean | null;
+  roles?: string[] | null;
+
+  [key: string]: any;
 }
