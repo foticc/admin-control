@@ -19,7 +19,7 @@ export class UserlistComponent implements OnInit, OnDestroy {
   url = '/api/user/page';
   searchSchema: SFSchema = {
     properties: {
-      no: {
+      username: {
         type: 'string',
         title: '编号1'
       }

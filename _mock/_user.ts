@@ -52,7 +52,7 @@ export const USERS = {
   'POST /user/:id': (req: MockRequest) => saveData(+req.params.id, req.body),
   '/user/current': {
     name: 'Cipchk',
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
+    avatar: '../assets/tmp/img/avatar.webp',
     userid: '00000001',
     email: 'cipchk@qq.com',
     signature: '海纳百川，有容乃大',

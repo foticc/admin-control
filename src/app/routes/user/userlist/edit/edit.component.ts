@@ -1,7 +1,6 @@
-import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -26,31 +25,33 @@ export class UserlistEditComponent implements OnInit {
     nickName: [''],
     email: ['', [Validators.email]],
     phone: [''],
-    roles: [['']],
+    roles: [[]],
     accountExpired: false,
     accountLocked: false,
     enable: true
   });
 
+  a: UserDetail = {
+    id: 1
+  };
+
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private modal: ModalHelper,
     private msgSrv: NzMessageService,
     private route: ActivatedRoute,
-    private location: Location,
+    private router: Router,
     private userApiService: UserApiService
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    if (id != null) {
+    if (id) {
+      console.log(id);
       this.userApiService.getUser(Number(id)).subscribe(res => {
-        console.log(res);
-
-        // this.form.setValue(res.data);
+        this.form.setValue(res.data);
       });
     }
-    // this.form.patchValue({ username: '123' });
     // this.http.get('/role/list').subscribe(res => {
     //   this.allRoles = res;
     // });
@@ -68,7 +69,7 @@ export class UserlistEditComponent implements OnInit {
   }
 
   back(): void {
-    this.location.back();
+    this.router.navigateByUrl('/user/user');
   }
 
   close(): void {
