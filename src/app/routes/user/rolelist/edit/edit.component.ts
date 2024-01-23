@@ -12,7 +12,7 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
   templateUrl: './edit.component.html'
 })
 export class RolelistEditComponent implements OnInit {
-  record: any = {};
+  record: any;
   i: any;
   schema: SFSchema = {
     properties: {
@@ -41,7 +41,7 @@ export class RolelistEditComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.record.id > 0) this.http.get(`/role/list/${this.record.id}`).subscribe(res => (this.i = res));
+    console.log('ng');
   }
 
   save(value: any): void {

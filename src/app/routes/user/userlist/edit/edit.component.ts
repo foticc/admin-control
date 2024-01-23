@@ -5,8 +5,9 @@ import { ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
+import { RoleApiService } from '../../apis/role.api.service';
 import { UserApiService } from '../../apis/user.api.service';
-import { UserDetail } from '../../model';
+import { Role, UserDetail } from '../../model';
 import { UserBindRoleComponent } from '../bindrole/user-bind-role.component';
 
 @Component({
@@ -18,14 +19,14 @@ import { UserBindRoleComponent } from '../bindrole/user-bind-role.component';
 export class UserlistEditComponent implements OnInit {
   record: UserDetail = {};
   i = {};
-  allRoles: Array<{ id: number; name: string }> = [];
+  allRoles: Role[] = [];
   form = this.fb.group({
     id: null,
-    username: ['', [Validators.minLength(5), Validators.maxLength(10)]],
+    username: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(10)]],
     nickName: [''],
     email: ['', [Validators.email]],
     phone: [''],
-    roles: [[]],
+    roles: [[], [Validators.required]],
     accountExpired: false,
     accountLocked: false,
     enable: true
@@ -41,25 +42,25 @@ export class UserlistEditComponent implements OnInit {
     private msgSrv: NzMessageService,
     private route: ActivatedRoute,
     private router: Router,
-    private userApiService: UserApiService
+    private userApiService: UserApiService,
+    private roleApiService: RoleApiService
   ) {}
 
   ngOnInit(): void {
+    this.roleApiService.list().subscribe(res => {
+      this.allRoles = res.data;
+    });
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      console.log(id);
       this.userApiService.getUser(Number(id)).subscribe(res => {
         this.form.setValue(res.data);
       });
     }
-    // this.http.get('/role/list').subscribe(res => {
-    //   this.allRoles = res;
-    // });
   }
 
   save(): void {
     if (this.form.valid) {
-      this.userApiService.saveUser(this.form.value).subscribe(res => {
+      this.userApiService.saveUser(this.form.getRawValue()).subscribe(res => {
         if (res.code === 200) {
           this.msgSrv.success('保存成功');
           this.back();
@@ -77,7 +78,7 @@ export class UserlistEditComponent implements OnInit {
     this.back();
   }
 
-  compareFn(c1: { id: number; name: string }, c2: number): boolean {
+  compareFn(c1: Role, c2: number): boolean {
     return c1 && c2 ? c1.id === c2 : c1.id === c2;
   }
 

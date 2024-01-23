@@ -2,18 +2,16 @@ import { Injectable } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { Observable } from 'rxjs';
 
-import { CommonResult, Pageable, UserDetail } from '../model';
+import { CommonResult, Role, UserDetail } from '../model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserApiService {
+export class RoleApiService {
   constructor(private _http: _HttpClient) {}
 
-  listPage(page: Pageable) {
-    this._http.get('/api/list/page', page).subscribe(s => {
-      console.log(s);
-    });
+  list(): Observable<CommonResult<Role[]>> {
+    return this._http.get('/api/role/list');
   }
 
   saveUser(req: UserDetail): Observable<CommonResult<UserDetail>> {

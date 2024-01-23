@@ -21,7 +21,7 @@ export class UserlistComponent implements OnInit, OnDestroy {
     properties: {
       username: {
         type: 'string',
-        title: '编号1'
+        title: '用户名'
       }
     }
   };

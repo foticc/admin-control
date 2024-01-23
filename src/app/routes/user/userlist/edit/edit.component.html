@@ -57,10 +57,10 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label nzFor="roles">roles</nz-form-label>
-      <nz-form-control>
-        <nz-select name="roles" nzMode="multiple" nzPlaceHolder="Please select" formControlName="roles" [compareWith]="compareFn">
-          <nz-option *ngFor="let item of allRoles" [nzKey]="item.id" [nzLabel]="item.name" [nzValue]="item.id" />
+      <nz-form-label nzRequired="true" nzFor="roles">roles</nz-form-label>
+      <nz-form-control nzHasFeedback [nzErrorTip]="'请给用户赋权'">
+        <nz-select formControlName="roles" nzMode="multiple" nzPlaceHolder="Please select">
+          <nz-option *ngFor="let item of allRoles" [nzLabel]="item.name" [nzValue]="item" />
         </nz-select>
       </nz-form-control>
     </nz-form-item>

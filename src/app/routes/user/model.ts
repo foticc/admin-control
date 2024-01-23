@@ -25,3 +25,8 @@ export interface UserDetail {
 
   [key: string]: any;
 }
+
+export interface Role {
+  id: number;
+  name: string | null;
+}

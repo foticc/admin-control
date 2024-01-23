@@ -17,9 +17,9 @@ export class RolelistComponent implements OnInit {
   url = `/api/role/page`;
   searchSchema: SFSchema = {
     properties: {
-      no: {
+      name: {
         type: 'string',
-        title: '编号'
+        title: '角色名'
       }
     }
   };
@@ -51,8 +51,6 @@ export class RolelistComponent implements OnInit {
   }
 
   add(): void {
-    // this.modal
-    //   .createStatic(FormEditComponent, { i: { id: 0 } })
-    //   .subscribe(() => this.st.reload());
+    this.modal.createStatic(RolelistEditComponent, null).subscribe(() => this.st.reload());
   }
 }
