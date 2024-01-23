@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { Observable } from 'rxjs';
 
-import { CommonResult, Role, UserDetail } from '../model';
+import { CommonResult, Role } from '../model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,19 +10,23 @@ import { CommonResult, Role, UserDetail } from '../model';
 export class RoleApiService {
   constructor(private _http: _HttpClient) {}
 
+  get loading(): boolean {
+    return this._http.loading;
+  }
+
   list(): Observable<CommonResult<Role[]>> {
     return this._http.get('/api/role/list');
   }
 
-  saveUser(req: UserDetail): Observable<CommonResult<UserDetail>> {
-    return this._http.post('/api/user/save', req);
+  saveRole(req: Role): Observable<CommonResult<Role>> {
+    return this._http.post('/api/role/save', req);
   }
 
-  updateUser(req: UserDetail): Observable<CommonResult<UserDetail>> {
+  updateUser(req: Role): Observable<CommonResult<Role>> {
     return this._http.put('/api/user/update', req);
   }
 
-  deleteUser(id: number): Observable<CommonResult<number>> {
-    return this._http.delete(`/api/user/${id}`);
+  deleteRole(id: number): Observable<CommonResult<number>> {
+    return this._http.delete(`/api/role/${id}`);
   }
 }

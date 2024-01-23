@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { SFSchema, SFUISchema } from '@delon/form';
-import { _HttpClient } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
+
+import { RoleApiService } from '../../apis/role.api.service';
 
 @Component({
   selector: 'app-user-rolelist-edit',
@@ -12,11 +13,10 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
   templateUrl: './edit.component.html'
 })
 export class RolelistEditComponent implements OnInit {
-  record: any;
+  record: any = {};
   i: any;
   schema: SFSchema = {
     properties: {
-      id: { type: 'string', title: '编号' },
       name: { type: 'string', title: '名称', maxLength: 15 }
     },
     required: ['name']
@@ -37,17 +37,21 @@ export class RolelistEditComponent implements OnInit {
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
-    public http: _HttpClient
+    public roleApiService: RoleApiService
   ) {}
 
   ngOnInit(): void {
-    console.log('ng');
+    console.log(this.record);
   }
 
   save(value: any): void {
-    this.http.post(`/user/${this.record.id}`, value).subscribe(res => {
-      this.msgSrv.success('保存成功');
-      this.modal.close(true);
+    this.roleApiService.saveRole(value).subscribe(res => {
+      if (res.data.id) {
+        this.msgSrv.success('保存成功');
+        this.modal.close(true);
+      } else {
+        this.msgSrv.error('保存失败');
+      }
     });
   }
 

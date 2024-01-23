@@ -3,9 +3,11 @@ import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { RolelistEditComponent } from './edit/edit.component';
 import { RolelistViewComponent } from './view/view.component';
+import { RoleApiService } from '../apis/role.api.service';
 
 @Component({
   selector: 'app-user-rolelist',
@@ -36,14 +38,21 @@ export class RolelistComponent implements OnInit {
           modal: { component: RolelistViewComponent },
           click: (item: any) => `/form/${item.id}`
         },
-        { text: '编辑', type: 'modal', modal: { component: RolelistEditComponent }, click: 'reload' }
+        { text: '编辑', type: 'modal', modal: { component: RolelistEditComponent }, click: 'reload' },
+        {
+          text: '删除',
+          type: 'del',
+          click: (item: any) => this.delete(item)
+        }
       ]
     }
   ];
 
   constructor(
     private http: _HttpClient,
-    private modal: ModalHelper
+    private modal: ModalHelper,
+    private msgSrv: NzMessageService,
+    private roleApiService: RoleApiService
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +60,13 @@ export class RolelistComponent implements OnInit {
   }
 
   add(): void {
-    this.modal.createStatic(RolelistEditComponent, null).subscribe(() => this.st.reload());
+    this.modal.createStatic(RolelistEditComponent).subscribe(() => this.st.reload());
+  }
+
+  delete(item: any) {
+    this.roleApiService.deleteRole(item.id).subscribe(res => {
+      this.msgSrv.success('删除成功');
+      this.st.reload();
+    });
   }
 }
