@@ -8,7 +8,6 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { RoleApiService } from '../../apis/role.api.service';
 import { UserApiService } from '../../apis/user.api.service';
 import { Role, UserDetail } from '../../model';
-import { UserBindRoleComponent } from '../bindrole/user-bind-role.component';
 
 @Component({
   selector: 'app-user-userlist-edit',
@@ -80,9 +79,5 @@ export class UserlistEditComponent implements OnInit {
 
   compareFn(c1: Role, c2: number): boolean {
     return c1 && c2 ? c1.id === c2 : c1.id === c2;
-  }
-
-  bind(): void {
-    this.modal.createStatic(UserBindRoleComponent).subscribe(s => {});
   }
 }

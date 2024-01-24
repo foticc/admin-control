@@ -35,3 +35,7 @@ export interface Permission {
   id: number;
   path: string | null;
 }
+
+export interface PermissionVo extends Permission {
+  roles: Role[];
+}

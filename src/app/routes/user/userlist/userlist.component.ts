@@ -8,6 +8,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { UserlistViewComponent } from './view/view.component';
 import { UserApiService } from '../apis/user.api.service';
+import { BindRoleComponent } from '../bindrole/bind-role.component';
 
 @Component({
   selector: 'app-user-userlist',
@@ -88,5 +89,9 @@ export class UserlistComponent implements OnInit, OnDestroy {
         this.msgSrv.success('删除失败');
       }
     });
+  }
+
+  test() {
+    this.modal.createStatic(BindRoleComponent).subscribe(() => console.log('123'));
   }
 }

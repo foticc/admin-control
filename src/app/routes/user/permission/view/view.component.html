@@ -4,6 +4,13 @@
 @if (i) {
   <div sv-container>
     <sv label="路径">{{ i.path }}</sv>
+    <sv label="角色">
+      @for (item of i.roles; track item.name) {
+        <li>{{ item.name }}</li>
+      } @empty {
+        <li> There are no items. </li>
+      }
+    </sv>
   </div>
 } @else {
   <nz-spin class="modal-spin" />

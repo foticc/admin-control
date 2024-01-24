@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { Observable } from 'rxjs';
 
-import { CommonResult, Permission } from '../model';
+import { CommonResult, Permission, PermissionVo } from '../model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +20,15 @@ export class PermsApiService {
     return this._http.get('/api/perms/list');
   }
 
-  savePerms(req: Permission): Observable<CommonResult<Permission>> {
+  getPerms(id: number): Observable<CommonResult<PermissionVo>> {
+    return this._http.get(`/api/perms/${id}`);
+  }
+
+  savePerms(req: PermissionVo): Observable<CommonResult<PermissionVo>> {
     return this._http.post('/api/perms/save', req);
   }
 
-  updatePerms(req: Permission): Observable<CommonResult<Permission>> {
+  updatePerms(req: PermissionVo): Observable<CommonResult<PermissionVo>> {
     return this._http.put('/api/perms/update', req);
   }
 

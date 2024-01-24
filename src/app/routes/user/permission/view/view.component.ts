@@ -4,6 +4,8 @@ import { SHARED_IMPORTS } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
+import { PermsApiService } from '../../apis/perms.api.service';
+
 @Component({
   selector: 'app-user-permission-view',
   standalone: true,
@@ -12,16 +14,19 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 })
 export class PermissionViewComponent implements OnInit {
   record: any = {};
-  i: any;
+  i: any = {};
 
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
-    private http: _HttpClient
+    private http: _HttpClient,
+    private permsApiservice: PermsApiService
   ) {}
 
   ngOnInit(): void {
-    this.http.get(`/perms/${this.record.id}`).subscribe(res => (this.i = res));
+    this.permsApiservice.getPerms(this.record.id).subscribe(res => {
+      this.i = res.data;
+    });
   }
 
   close(): void {

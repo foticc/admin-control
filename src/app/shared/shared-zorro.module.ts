@@ -22,6 +22,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTransferModule } from 'ng-zorro-antd/transfer';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 
@@ -51,5 +52,6 @@ export const SHARED_ZORRO_MODULES = [
   NzSwitchModule,
   NzBreadCrumbModule,
   NzDividerModule,
-  NzTreeSelectModule
+  NzTreeSelectModule,
+  NzTransferModule
 ];
