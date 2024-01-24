@@ -2,13 +2,15 @@ import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest, HttpR
 import { inject, Injector } from '@angular/core';
 import { IGNORE_BASE_URL } from '@delon/theme';
 import { environment } from '@env/environment';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { catchError, mergeMap, Observable, of, throwError } from 'rxjs';
 
-import { checkStatus, getAdditionalHeaders, ReThrowHttpError, toLogin } from './helper';
+import { getAdditionalHeaders, ReThrowHttpError, toLogin } from './helper';
 import { tryRefreshToken } from './refresh-token';
 
 function handleData(injector: Injector, ev: HttpResponseBase, req: HttpRequest<any>, next: HttpHandlerFn): Observable<any> {
-  checkStatus(injector, ev);
+  // checkStatus(injector, ev);
   // 业务处理：一些通用操作
   switch (ev.status) {
     case 200:
@@ -42,15 +44,17 @@ function handleData(injector: Injector, ev: HttpResponseBase, req: HttpRequest<a
       toLogin(injector);
       break;
     case 403:
+      injector.get(NzNotificationService).warning('无访问权限', '');
+      break;
     case 404:
     case 500:
       // goTo(injector, `/exception/${ev.status}?url=${req.urlWithParams}`);
       // injector.get(NzMessageService).error(ev);
-      // if (ev instanceof HttpErrorResponse) {
-      //   injector.get(NzMessageService).error(ev.error.message);
-      // } else {
-      //   injector.get(NzMessageService).error('未知错误');
-      // }
+      if (ev instanceof HttpErrorResponse) {
+        injector.get(NzMessageService).error(ev.error.message);
+      } else {
+        injector.get(NzMessageService).error('未知错误');
+      }
       break;
     default:
       if (ev instanceof HttpErrorResponse) {

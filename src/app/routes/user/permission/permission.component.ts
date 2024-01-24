@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { STColumn, STComponent } from '@delon/abc/st';
-import { SFSchema } from '@delon/form';
+import { SFSchema, SFSelectWidgetSchema } from '@delon/form';
+import { SFSchemaEnumType } from '@delon/form/src/schema';
 import { ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { mergeMap, Observable, of } from 'rxjs';
 
 import { PermissionEditComponent } from './edit/edit.component';
 import { PermissionViewComponent } from './view/view.component';
@@ -23,6 +25,14 @@ export class PermissionComponent implements OnInit {
       path: {
         type: 'string',
         title: '路径'
+      },
+      roleId: {
+        type: 'string',
+        title: 'role',
+        ui: {
+          widget: 'select',
+          asyncData: () => this.loadSearch()
+        } as SFSelectWidgetSchema
       }
     }
   };
@@ -65,7 +75,10 @@ export class PermissionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('init');
+    // this.roleApiService.list().subscribe(res=>{
+    //   this.searchSchema.
+    // })
+    console.log(this.searchSchema);
   }
 
   add(): void {
@@ -77,5 +90,16 @@ export class PermissionComponent implements OnInit {
       this.msgSrv.success('删除成功');
       this.st.reload();
     });
+  }
+
+  loadSearch(): Observable<SFSchemaEnumType[]> {
+    return this.roleApiService.list().pipe(
+      mergeMap(m => {
+        let map = m.data.map(v => {
+          return { label: v.name, value: v.id };
+        });
+        return of(map);
+      })
+    );
   }
 }
