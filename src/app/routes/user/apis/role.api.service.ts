@@ -22,8 +22,8 @@ export class RoleApiService {
     return this._http.post('/api/role/save', req);
   }
 
-  updateUser(req: Role): Observable<CommonResult<Role>> {
-    return this._http.put('/api/user/update', req);
+  updateRole(req: Role): Observable<CommonResult<Role>> {
+    return this._http.put('/api/role/update', req);
   }
 
   deleteRole(id: number): Observable<CommonResult<number>> {

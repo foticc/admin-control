@@ -45,7 +45,15 @@ export class RolelistEditComponent implements OnInit {
   }
 
   save(value: any): void {
-    this.roleApiService.saveRole(value).subscribe(res => {
+    let observable;
+    if (value.id) {
+      console.log(value);
+      observable = this.roleApiService.updateRole(value);
+    } else {
+      console.log(value);
+      observable = this.roleApiService.saveRole(value);
+    }
+    observable.subscribe(res => {
       if (res.data.id) {
         this.msgSrv.success('保存成功');
         this.modal.close(true);

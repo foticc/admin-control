@@ -30,3 +30,8 @@ export interface Role {
   id: number;
   name: string | null;
 }
+
+export interface Permission {
+  id: number;
+  path: string | null;
+}

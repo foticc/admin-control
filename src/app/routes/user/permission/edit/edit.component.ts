@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { SFSchema, SFUISchema } from '@delon/form';
-import { _HttpClient } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
+
+import { PermsApiService } from '../../apis/perms.api.service';
 
 @Component({
   selector: 'app-user-permission-edit',
@@ -16,7 +17,7 @@ export class PermissionEditComponent implements OnInit {
   i: any;
   schema: SFSchema = {
     properties: {
-      path: { type: 'string', title: '路径', format: 'uri' }
+      path: { type: 'string', title: '路径' }
     },
     required: ['path']
   };
@@ -33,16 +34,22 @@ export class PermissionEditComponent implements OnInit {
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
-    public http: _HttpClient
+    public permsApiService: PermsApiService
   ) {}
 
   ngOnInit(): void {
-    if (this.record.id > 0) this.http.get(`/perms/${this.record.id}`).subscribe(res => (this.i = res));
+    console.log('init');
   }
 
   save(value: any): void {
-    this.http.post(`/perms?status=fail`, value).subscribe(res => {
-      if (res.data > 0) {
+    let observable;
+    if (value.id) {
+      observable = this.permsApiService.updatePerms(value);
+    } else {
+      observable = this.permsApiService.savePerms(value);
+    }
+    observable.subscribe(res => {
+      if (res.data.id) {
         this.msgSrv.success('保存成功');
         this.modal.close(true);
       } else {
