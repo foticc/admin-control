@@ -1,49 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SHARED_IMPORTS } from '@shared';
-import { TransferItem } from 'ng-zorro-antd/transfer';
-import { mergeMap, of } from 'rxjs';
+import { NzSelectSizeType } from 'ng-zorro-antd/select';
 
 import { RoleApiService } from '../apis/role.api.service';
+import { Role } from '../model';
 
 @Component({
-  selector: 'user-bind-role',
+  selector: 'bind-role',
   standalone: true,
   imports: [SHARED_IMPORTS],
-  templateUrl: './bind-role.component.html'
+  template: `
+    <nz-select
+      [(ngModel)]="selected"
+      [nzSize]="size"
+      nzMode="tags"
+      nzPlaceHolder="Please select"
+      (ngModelChange)="change($event)"
+      [compareWith]="compareFn"
+    >
+      <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.name" [nzValue]="option" />
+    </nz-select>
+  `
 })
 export class BindRoleComponent implements OnInit {
-  list: TransferItem[] = [];
-  disabled = false;
+  listOfOption: Role[] = [];
+  size: NzSelectSizeType = 'default';
 
-  nselectKey = ['0', '2'];
+  @Input()
+  selected: Role[] = [];
 
-  constructor(private apiService: RoleApiService) {}
+  @Output()
+  readonly selectedChange = new EventEmitter();
+
+  constructor(private roleApiService: RoleApiService) {}
 
   ngOnInit(): void {
-    this.apiService
-      .list()
-      .pipe(
-        mergeMap(m => {
-          return of(
-            m.data.map(mp => {
-              return {
-                key: mp.id,
-                title: mp.name
-              } as TransferItem;
-            })
-          );
-        })
-      )
-      .subscribe(se => {
-        this.list = se;
-      });
+    this.roleApiService.list().subscribe(res => {
+      this.listOfOption = res.data;
+    });
   }
 
-  select(ret: {}): void {
-    console.log('nzSelectChange', ret);
+  change(event: any) {
+    this.selectedChange.emit(event);
   }
 
-  change(ret: {}): void {
-    console.log('nzChange', ret);
+  compareFn(o1: any, o2: any): boolean {
+    return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 }
