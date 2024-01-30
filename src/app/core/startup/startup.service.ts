@@ -67,7 +67,7 @@ export class StartupService {
     // }
     // mock
     const app: any = {
-      name: `NG-ALAIN`,
+      name: `Admin`,
       description: `NG-ZORRO admin panel front-end framework`
     };
     const user: any = {
@@ -120,9 +120,17 @@ export class StartupService {
             icon: { type: 'icon', value: 'control' }
           },
           {
+            group: true,
             text: 'Menu',
             link: '/user/menu',
-            icon: { type: 'icon', value: 'menu' }
+            icon: { type: 'icon', value: 'menu' },
+            children: [
+              {
+                text: 'Menu',
+                link: '/user/menu',
+                icon: { type: 'icon', value: 'menu' }
+              }
+            ]
           }
         ]
       },
