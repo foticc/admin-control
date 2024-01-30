@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DA_SERVICE_TOKEN } from '@delon/auth';
 import { I18nPipe, SettingsService, User } from '@delon/theme';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -16,11 +16,11 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
     </div>
     <nz-dropdown-menu #userMenu="nzDropdownMenu">
       <div nz-menu class="width-sm">
-        <div nz-menu-item routerLink="/pro/account/center">
+        <div nz-menu-item routerLink="/account/base">
           <i nz-icon nzType="user" class="mr-sm"></i>
           个人中心
         </div>
-        <div nz-menu-item routerLink="/pro/account/settings">
+        <div nz-menu-item routerLink="/account/security">
           <i nz-icon nzType="setting" class="mr-sm"></i>
           个人设置
         </div>
@@ -38,12 +38,13 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [NzDropDownModule, NzMenuModule, NzIconModule, I18nPipe, NzAvatarModule]
+  imports: [NzDropDownModule, NzMenuModule, NzIconModule, I18nPipe, NzAvatarModule, RouterLink]
 })
 export class HeaderUserComponent {
   private readonly settings = inject(SettingsService);
   private readonly router = inject(Router);
   private readonly tokenService = inject(DA_SERVICE_TOKEN);
+
   get user(): User {
     return this.settings.user;
   }
