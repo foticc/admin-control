@@ -14,19 +14,21 @@
   <se label="Enable">
     <nz-switch formControlName="enable" nzCheckedChildren="启用" nzUnCheckedChildren="禁用" />
   </se>
-  <se label="parent">
-    <nz-tree-select
-      formControlName="parentId"
-      nzShowIcon="true"
-      nzPlaceHolder="Please select"
-      [(ngModel)]="nodeSelectValue"
-      [nzDropdownMatchSelectWidth]="true"
-      [nzDropdownStyle]="{ 'max-height': '300px' }"
-      [nzNodes]="nodes"
-      [nzAsyncData]="true"
-      (nzExpandChange)="onExpandChange($event)"
-    />
-  </se>
+  @if (record && !record.group) {
+    <se label="parent">
+      <nz-tree-select
+        formControlName="parentId"
+        nzShowIcon="true"
+        nzPlaceHolder="Please select"
+        [(ngModel)]="nodeSelectValue"
+        [nzDropdownMatchSelectWidth]="true"
+        [nzDropdownStyle]="{ 'max-height': '300px' }"
+        [nzNodes]="nodes"
+        [nzAsyncData]="true"
+        (nzExpandChange)="onExpandChange($event)"
+      />
+    </se>
+  }
 </form>
 <div class="modal-footer">
   <button nz-button nzType="primary" type="submit" (click)="f.ngSubmit.emit()" [disabled]="!f.valid">保存</button>

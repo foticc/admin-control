@@ -38,9 +38,8 @@
               nz-popconfirm
               nzOkDanger
               [nzIcon]="iconTpl"
-              nzPopconfirmTitle="Title"
-              [nzBeforeConfirm]="beforeConfirm"
-              (nzOnConfirm)="confirm()"
+              nzPopconfirmTitle="确认删除？"
+              (nzOnConfirm)="confirm(item)"
               (nzOnCancel)="cancel()"
               (click)="delete(item)"
             >
@@ -49,6 +48,11 @@
             <ng-template #iconTpl>
               <span nz-icon nzType="question-circle-o" style="color: red"></span>
             </ng-template>
+            @if (item.group) {
+              <button nz-button nzSize="small" nzType="default" nzShape="circle" (click)="add(item)">
+                <span nz-icon nzType="plus"></span>
+              </button>
+            }
           </td>
         </tr>
       </ng-container>

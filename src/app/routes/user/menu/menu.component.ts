@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { SHARED_IMPORTS } from '@shared';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { Observable } from 'rxjs';
 
 import { MenueditComponent } from './menuedit/menuedit.component';
+import { MenuApiService } from '../apis/menu.api.service';
 
 export interface TreeNodeInterface {
   id: number;
@@ -31,16 +33,13 @@ export class UserMenuComponent implements OnInit {
 
   constructor(
     private _http: _HttpClient,
-    private modal: ModalHelper
+    private modal: ModalHelper,
+    private menuApiService: MenuApiService,
+    private msgSrv: NzMessageService
   ) {}
 
   ngOnInit(): void {
-    this._http.get('/api/menu/load').subscribe(res => {
-      this.tableData = res.data;
-      this.tableData.forEach(fe => {
-        this.mapOfExpandedData[fe.id] = this.convertTreeToList(fe);
-      });
-    });
+    this.loadData();
   }
 
   collapse(array: TreeNodeInterface[], data: TreeNodeInterface, $event: boolean): void {
@@ -116,26 +115,54 @@ export class UserMenuComponent implements OnInit {
   }
 
   edit(item: TreeNodeInterface): void {
-    console.log(item);
-    this.modal.createStatic(MenueditComponent, { record: item }).subscribe(s => {
-      if (s.action != 'reload') {
+    this.modal.createStatic(MenueditComponent, { record: item, action: 'edit' }).subscribe(s => {
+      if (s === 'success') {
+        this.loadData();
+      }
+    });
+  }
+
+  add(item: TreeNodeInterface): void {
+    this.modal.createStatic(MenueditComponent, { record: item, action: 'add' }).subscribe(s => {
+      if (s === 'success') {
+        this.loadData();
       }
     });
   }
 
   delete(item: TreeNodeInterface): void {
     console.log(`delete${item.id}`);
+    // this.menuApiService.delMenu(item.id).subscribe(res=>{
+    //
+    // })
   }
 
-  confirm() {}
+  confirm(item: TreeNodeInterface) {
+    console.log(`confirm${item.id}`);
+    this.menuApiService.delMenu(item.id).subscribe(res => {
+      this.msgSrv.success('删除成功！');
+      this.loadData();
+    });
+  }
 
-  cancel() {}
+  cancel() {
+    console.log('cancel');
+  }
 
   beforeConfirm(): Promise<boolean> {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve(true);
       }, 3000);
+    });
+  }
+
+  loadData() {
+    this._http.get('/api/menu/load').subscribe(res => {
+      this.tableData = res.data;
+      this.tableData.forEach(fe => {
+        this.mapOfExpandedData[fe.id] = this.convertTreeToList(fe);
+      });
     });
   }
 }

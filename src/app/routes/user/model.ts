@@ -39,3 +39,15 @@ export interface Permission {
 export interface PermissionVo extends Permission {
   roles: Role[];
 }
+
+export interface MenuVo {
+  id: number | null;
+  text: string | null;
+  group: boolean | null;
+  link: string | null;
+  level: number | null;
+  icon: string | null;
+  parentId: string | null;
+  hasChildren: boolean | null;
+  enable: boolean | null;
+}
