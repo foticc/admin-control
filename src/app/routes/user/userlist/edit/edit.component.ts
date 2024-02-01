@@ -1,3 +1,4 @@
+import { JsonPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,16 +8,17 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { RoleApiService } from '../../apis/role.api.service';
 import { UserApiService } from '../../apis/user.api.service';
-import { Role, UserDetail } from '../../model';
+import { BindRoleComponent } from '../../bindrole/bind-role.component';
+import { Role } from '../../model';
 
 @Component({
   selector: 'app-user-userlist-edit',
   standalone: true,
-  imports: [...SHARED_IMPORTS],
+  imports: [...SHARED_IMPORTS, BindRoleComponent, JsonPipe],
   templateUrl: './edit.component.html'
 })
 export class UserlistEditComponent implements OnInit {
-  record: UserDetail = {};
+  record: any = {};
   i = {};
   allRoles: Role[] = [];
   form = this.fb.group({
@@ -30,10 +32,6 @@ export class UserlistEditComponent implements OnInit {
     accountLocked: false,
     enable: true
   });
-
-  a: UserDetail = {
-    id: 1
-  };
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -52,6 +50,7 @@ export class UserlistEditComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.userApiService.getUser(Number(id)).subscribe(res => {
+        this.record = res.data;
         this.form.setValue(res.data);
       });
     }

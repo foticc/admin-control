@@ -59,9 +59,7 @@
     <nz-form-item>
       <nz-form-label nzRequired="true" nzFor="roles">roles</nz-form-label>
       <nz-form-control nzHasFeedback [nzErrorTip]="'请给用户赋权'">
-        <nz-select formControlName="roles" nzMode="multiple" nzPlaceHolder="Please select">
-          <nz-option *ngFor="let item of allRoles" [nzLabel]="item.name" [nzValue]="item" />
-        </nz-select>
+        <bind-role formControlName="roles" [(selected)]="record.roles" />
       </nz-form-control>
     </nz-form-item>
     <div class="modal-footer">
@@ -69,4 +67,5 @@
       <button nz-button type="button" (click)="close()">关闭</button>
     </div>
   </form>
+  <pre>{{ form.value | json }}</pre>
 </nz-card>

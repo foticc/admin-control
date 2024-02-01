@@ -21,7 +21,7 @@ export interface UserDetail {
   accountExpired?: boolean | null;
   accountLocked?: boolean | null;
   enable?: boolean | null;
-  roles?: string[] | null;
+  roles: Role[] | string[];
 
   [key: string]: any;
 }

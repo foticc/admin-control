@@ -4,8 +4,6 @@ import { SHARED_IMPORTS } from '@shared';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
-import { UserDetail } from '../../model';
-
 @Component({
   selector: 'app-user-userlist-view',
   standalone: true,
@@ -13,7 +11,7 @@ import { UserDetail } from '../../model';
   templateUrl: './view.component.html'
 })
 export class UserlistViewComponent implements OnInit {
-  record: UserDetail = {};
+  record: any;
   i: any;
 
   constructor(
